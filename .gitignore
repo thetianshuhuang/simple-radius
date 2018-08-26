@@ -1,0 +1,3 @@
+*.sublime*
+*.pyc
+*DB.sqlite3

@@ -61,7 +61,7 @@ def change_password(username, password):
 
     try:
         target = Radcheck.objects.using("radius").get(username=username)
-        target.password = make_md5(password, settings.SALT_LENGTH)
+        target.value = make_md5(password, settings.SALT_LENGTH)
         target.save()
         return (True, "Success!")
 

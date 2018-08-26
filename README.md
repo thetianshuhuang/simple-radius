@@ -51,35 +51,48 @@ replacing ```password``` with your desired password.
 
 
 5. Configure FreeRadius for MySQL:
-```shell
+```sh
 cd /etc/freeradius/3.0/mods-enabled
 ln -s ../mods-available/sql sql
 ```
 
 
 6. Install Python (>= v3.6) if not already installed. NOTE: on certain systems (especially Ubuntu server) you may need to add a repository to install pip (```sudo apt-add-repository universe```, etc).
-```shell
+```sh
 sudo apt-get install python3
 sudo apt-get install python3-pip
 ```
 
 7. Clone this repository.
-```shell
+```sh
 sudo apt-get install git
 git clone https://github.com/thetianshuhuang/simple-radius
 cd simple-radius
 ```
 
 8. Create a virtual environment
-```shell
+```sh
 sudo pip3 install virtualenv
 virtualenv radiusenv
 source radiusenv/bin/activate
 ```
 
 9. Install Python dependencies
-```shell
+```sh
 pip install django
 pip install mysqlclient
 ```
 
+# API
+Currently, no frontend has been implemented.
+
+```sh
+$ python manage.py shell
+
+>>> from management import auth
+>>> auth.add_user("test_user", "test")
+>>> auth.change_password("test_user", "test_password")
+>>> exit()
+
+$ radtest test_user test_password localhost 0 testing123
+```

@@ -73,13 +73,13 @@ cd simple-radius
 8. Create a virtual environment
 ```shell
 sudo pip3 install virtualenv
-virtualenv radius
-source radius/bin/activate
+virtualenv radiusenv
+source radiusenv/bin/activate
 ```
 
 9. Install Python dependencies
 ```shell
 pip install django
-pip install 
+pip install mysqlclient
 ```
 

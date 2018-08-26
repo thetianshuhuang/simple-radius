@@ -55,7 +55,7 @@ def make_md5(key, length):
     return base64.b64encode(
         smd5(
             key.encode("utf-8"),
-            secrets.token_bytes(length)))
+            secrets.token_bytes(length))).decode("utf-8")
 
 
 if __name__ == "__main__":

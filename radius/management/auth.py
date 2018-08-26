@@ -18,8 +18,12 @@ def add_user(username, password):
         Target password
     """
 
-    Radcheck(
-        username=username,
-        attribute="SMD5-Password",
-        op=":=",
-        value=make_md5(password, settings.SALT_LENGTH)).save()
+    (
+        Radcheck(
+            username=username,
+            attribute="SMD5-Password",
+            op=":=",
+            value=make_md5(password, settings.SALT_LENGTH))
+        .using("radius")
+        .save()
+    )

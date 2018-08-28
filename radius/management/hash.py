@@ -3,7 +3,10 @@
 
 import hashlib
 import base64
-from os import urandom
+try:
+    from secrets import token_bytes as make_salt
+except ModuleNotFoundError:
+    from os import urandom as make_salt
 
 
 def smd5(key, salt):
@@ -56,7 +59,7 @@ def make_md5(key, length):
     return base64.b64encode(
         smd5(
             key.encode("utf-8"),
-            urandom(length))).decode("utf-8")
+            make_salt(length))).decode("utf-8")
 
 
 if __name__ == "__main__":

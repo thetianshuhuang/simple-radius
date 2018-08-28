@@ -3,7 +3,7 @@
 
 import hashlib
 import base64
-import secrets
+from os import urandom
 
 
 def smd5(key, salt):
@@ -42,7 +42,8 @@ def make_md5(key, length):
     key : str
         Key to hash
     length : int
-        Length of salt (generated with ``secrets.token_bytes``)
+        Length of salt
+        (generated with ``secrets.token_bytes`` or ``os.urandom``)
 
     Returns
     -------
@@ -55,7 +56,7 @@ def make_md5(key, length):
     return base64.b64encode(
         smd5(
             key.encode("utf-8"),
-            secrets.token_bytes(length))).decode("utf-8")
+            urandom(length))).decode("utf-8")
 
 
 if __name__ == "__main__":

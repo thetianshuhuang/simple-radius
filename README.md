@@ -27,7 +27,7 @@ Options for ```mysql_secure_installation```:
 	- Disallow reoot login remotely: Y
 	- Remove test database: Y
 	- Reload privilege tables: Y
-
+NOTE: if ```libmysqlclient-dev``` cannot be found, try installing ```default-libmysqlclient-dev```.
 
 3. Configure MySQL for FreeRadius
 ```shell

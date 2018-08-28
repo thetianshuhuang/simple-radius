@@ -10,28 +10,45 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# -- Configuration Imports ----------------------------------------------------
+
+import os
+import json
+
+
+# -- Path ---------------------------------------------------------------------
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
+# -- Security -----------------------------------------------------------------
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8%_2jqd5$elz*$io#&pxg0-$%m2@2!!_ig-4!-(%&n4ti)-ht-'
+# Sensitive settings fetched from external config
+with open(os.path.join(BASE_DIR, "radius", "login.json")) as login_src:
+    login = json.load(login_src)
 
-# SECURITY WARNING: don't run with debug turned on in production!
+    # SQL password
+    SQL_PASSWORD = login["sql_password"]
+
+    # Django Secret Key
+    SECRET_KEY = login["django_secret_key"]
+
+    # Current host IP (must be set by user)
+    CURRENT_HOST = login["host_name"]
+
+
+# Django debug setting
 DEBUG = True
 
+# Length of salt to use with freeradius, in bytes
 SALT_LENGTH = 8
 
+# Allowed hosts for the server
+ALLOWED_HOSTS = ["127.0.0.1", CURRENT_HOST]
 
-ALLOWED_HOSTS = []
 
-
-# Application definition
+# -- Applications -------------------------------------------------------------
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,6 +61,9 @@ INSTALLED_APPS = [
     'management',
 ]
 
+
+# -- Middleware ---------------------------------------------------------------
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,6 +73,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+# -- Front End ----------------------------------------------------------------
 
 ROOT_URLCONF = 'radius.urls'
 
@@ -78,6 +101,7 @@ WSGI_APPLICATION = 'radius.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,7 +111,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'radius',
         'USER': 'radius',
-        'PASSWORD': 'radpass',
+        'PASSWORD': SQL_PASSWORD,
         'HOST': 'localhost',
         'PORT': '',
     }

@@ -49,13 +49,29 @@ mysql> ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'p
 ```
 replacing ```password``` with your desired password.
 
+If this still fails (MariaDB?), use
+```
+mysql> USE mysql;
+mysql> SET PASSWORD FOR 'root'@'localhost' = PASSWORD('password');
+```
 
-5. Configure FreeRadius for MySQL:
+4. Configure FreeRadius for MySQL:
 ```sh
 cd /etc/freeradius/3.0/mods-enabled
 ln -s ../mods-available/sql sql
 ```
 
+
+5. Set up MySQL login for FreeRadius
+```sh
+mysql -u root -p
+
+mysql> SET PASSWORD FOR 'root'@'localhost' = PASSWORD('password');
+mysql> GRANT ALL ON radius.* to 'radius'@'localhost';
+```
+Replace 'password' with the desired password.
+
+NOTE: if ```mysql -u root -p``` fails, you may need to run as ```sudo```.
 
 6. Install Python (>= v3.6) if not already installed. NOTE: on certain systems (especially Ubuntu server) you may need to add a repository to install pip (```sudo apt-add-repository universe```, etc).
 ```sh
@@ -82,6 +98,7 @@ source radiusenv/bin/activate
 pip install django
 pip install mysqlclient
 ```
+
 
 # API
 Currently, no frontend has been implemented.
